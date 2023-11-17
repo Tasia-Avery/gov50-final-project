@@ -40,7 +40,7 @@ corrdata
 genderdata <- read_excel("GenDip_Dataset_1968-2021.xlsx")
 genderdata
 
-globaldata <- read.csv()
+
 
 
 
@@ -59,18 +59,6 @@ corrdata
 
 
 
-```{r}
-plot_q2 <- ggplot(data = corrdata,
-                  mapping = aes(x = region,
-                                y = corrupt_perc)) +
-  geom_boxplot() +
-  facet_wrap(~ region, nrow = 1) +
-  labs(
-    x = "Continent",
-    y = "Average Corruption Percentage in Different Regions 2000-2015"
-  )
-plot_q2
-```
 
 ```{r}
 by_continent_plot <- ggplot(data = corrdata,
@@ -84,21 +72,32 @@ by_continent_plot <- ggplot(data = corrdata,
               ) +
   facet_wrap(~ region, nrow = 1)
 by_continent_plot
-```
 
-
-
-```{r}
 by_continent_scatter <- corrdata |>
   ggplot(mapping = aes(x = year,
                      y = corrupt_perc,
-                     color =`country`, digits = 2)) +
+                      digits = 2)) +
   geom_point(alpha = 0.8) +
+  facet_wrap(~ region, nrow = 1)
   labs(x = "Region",
        y = "Level of Corruption in Regional Countries")
 
 by_continent_scatter
+
+region_histogram <- ggplot(data = corrdata,
+                  mapping = aes(x = region,
+                                y = corrupt_perc)) +
+  geom_boxplot() +
+  facet_wrap(~ region, nrow = 1) +
+  labs(
+    x = "Continent",
+    y = "Average Corruption Percentage in Different Regions 2000-2015"
+  )
+region_histogram
 ```
+
+
+
 
 As seen by the Corruption in Different Regions 2000-2015 graph, countries in Africa tend to have higher levels of perceived corruption, while Western European have the lowest levels followed by Eastern European, Latin American and Carribean, and then Asian and Pacific Island Countries. 
 
