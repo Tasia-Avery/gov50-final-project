@@ -20,37 +20,68 @@ The question I would like to answer in my research, is what forms of government 
 
 The data I have begun to collect for this analysis is very large. There are over 3000 rows in the data frame that i have currently rewritten to match the code, as such, there is more data being added to this analysis, and limitations on available data may change the overarching analysis. However, despite this, I believe that it is important to analyze these countries in terms of the regions they are a part of, as well as analyzing similar traits among countries whenever possible. As the world moves forward it is important that governments are open and honest, but also representative of the people and ideas that they govern. For that reason, I believe that it is important to analyze the different types of governments that countries use to govern, but also the involvement of women who are representative of approximately half of the world's population. 
 
-[Important note about current dataset] The data has recently been reformatted, and as such the corrupt_perc variable is currently not formatted correctly. The data is correct, but the scale on the y axis will be 0-100. Values closer to 100 are representative of a country with lower levels of corruption (they have a more honest government), and values closer to 0 represent a very corrupt government.
+[Important note about current dataset] The data is correct, but the scale on the y axis will be 0-100. Values closer to 100 are representative of a country with lower levels of corruption (they have a more honest government), and values closer to 0 represent a very corrupt government.
 
-Region Values:
+Region Values for Corruption:
 1 - Africa
 2 - Asia and Pacific Islands
 3 - Eastern European 
 4 - Latin America and Carribean
 5 - Western European and other 
+
+Region Values for Gender:
+0 - Africa
+1 - Asia 
+2 - Central and North America
+3 - Europe
+4 - Middle East
+5 - Nordic Countries
+6 - Oceania 
+7 - South America
+
 ```{r}
 library(tidyverse)
 library(ggplot2)
 library(readxl)
-
-
 corrdata <- read_excel("~/Downloads/Corruptclean2 (1).xlsx")
-corrdata
-
+corrdata <- na.omit(corrdata)
 genderdata <- read_excel("GenDip_Dataset_1968-2021.xlsx")
-genderdata
-
-
-
-
 
 corrdata <- corrdata|>
   mutate(
     year = as.integer(year), 
       corrupt_perc = as.integer(corrupt_perc)
   )
-corrdata
+
+genderdata <- genderdata |>
+  mutate(
+    gender = if_else(gender == 1, "Female", "Male")
+  ) 
+
+gender_table <- genderdata |>
+group_by(gender, region_send) |>
+  summarize(Count = n()) 
+
 ```
+
+
+
+
+
+
+```{r}
+gender_continent_scatter <- gender_table |>
+  ggplot(mapping = aes(x = region_send,
+                     y = Count,
+                     color =`gender`,
+                      digits = 2)) +
+  geom_point(alpha = 0.8) +
+  labs(x = "Region",
+       y = "Number of Diplomats Sent by Gender",
+       title = "Diplomats by Gender Scatter Plot")
+gender_continent_scatter
+```
+This plot demonstrates the number of diplomats sent to each of the 7 regions based on their gender. The pink dots indicate female, while the blue dots represent male. As demonstrated in this graph, the majority of countries send a significantly higher amount of male Diplomats abraod than female. 
 
 
 
@@ -64,11 +95,14 @@ by_continent_plot <- ggplot(data = corrdata,
               labs(
                 x = "Year",
                 y = "Corruption Level",
-                title = "Corruption in Different Regions 2000-2015"
+                title = "Corruption in Different Regions 2000-2015 Plot"
               ) +
   facet_wrap(~ region, nrow = 1)
 by_continent_plot
+```
+As seen by the Corruption in Different Regions 2000-2015 graph, countries in Africa tend to have higher levels of perceived corruption, while Western European have the lowest levels followed by Eastern European, Latin American and Carribean, and then Asian and Pacific Island Countries.
 
+```{r}
 by_continent_scatter <- corrdata |>
   ggplot(mapping = aes(x = year,
                      y = corrupt_perc,
@@ -76,10 +110,13 @@ by_continent_scatter <- corrdata |>
   geom_point(alpha = 0.8) +
   facet_wrap(~ region, nrow = 1)
   labs(x = "Region",
-       y = "Level of Corruption in Regional Countries")
-
+       y = "Level of Corruption in Regional Countries",
+       title = "Corruption in Different Regions 2000-2015 Scatter Plot")
 by_continent_scatter
+```
+(This graph is simply another way to visualize the perceived corruption in different countries, so is the next one)
 
+```{r}
 region_histogram <- ggplot(data = corrdata,
                   mapping = aes(x = region,
                                 y = corrupt_perc)) +
@@ -87,15 +124,16 @@ region_histogram <- ggplot(data = corrdata,
   facet_wrap(~ region, nrow = 1) +
   labs(
     x = "Continent",
-    y = "Average Corruption Percentage in Different Regions 2000-2015"
+    y = "Average Corruption Percentage in Different Regions 2000-2015",
+    title = "Corruption by Region 2000-2015 Histogram"
   )
 region_histogram
 ```
+This graph shows a very clear representation that countries in Western Europe have significantly lower levels on average of perceived corruption than the other regions. 
 
 
 
-
-As seen by the Corruption in Different Regions 2000-2015 graph, countries in Africa tend to have higher levels of perceived corruption, while Western European have the lowest levels followed by Eastern European, Latin American and Carribean, and then Asian and Pacific Island Countries. 
+Prior to my final project I have more analyses to make, and datasets to combine. However, the data I currently have shows that there is an underwhelming amount of women included in international affairs in the last 30 years, and that many countries are experiencing higher levels of corruption. Going forward with my analysis, I will be looking at the impacts on women in individual countries to see how their involvement affects the perceived levels of corruption. (That requires changing lots of names, so is in progress). At this time, I believe that countries with a higher level of women participation are likely to have a lower level of corruption. I think this due to views and beliefs regarding freedom and equality. 
 
 
 
