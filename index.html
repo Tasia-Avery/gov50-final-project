@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["Corruptclean2 (1).xlsx","Corruptdata.csv","CorruptionData_csv.csv","data_csv.csv","drug_overdose_death_rates.csv","GenDip_Dataset_1968-2021.xlsx","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-1-2.png","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-2-2.png","index_files/figure-html5/unnamed-chunk-2-3.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-3-2.png","index_files/figure-html5/unnamed-chunk-3-3.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","Pew-Research-Center-Global-Attitudes-Spring-2022-Survey-Data.zip"]}
+  {"type":"character","attributes":{},"value":["Corruptclean2 (1).xlsx","Corruptdata.csv","CorruptionData_csv.csv","data_csv.csv","drug_overdose_death_rates.csv","GenDip_Dataset_1968-2021.xlsx","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-1-1.png","index_files/figure-html5/unnamed-chunk-1-2.png","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-2-2.png","index_files/figure-html5/unnamed-chunk-2-3.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-3-2.png","index_files/figure-html5/unnamed-chunk-3-3.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.24/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","Pew-Research-Center-Global-Attitudes-Spring-2022-Survey-Data.zip"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1522,83 +1522,63 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>For my final project I will be analyzing data related to political culture, and political environment. It is very important to compare different countries across a span of years in order to gain better information as to how they have changed over time individually, but also in comparison to other countries. I have currently sourced data from transparency international, that details the perception of government corruption in various countries across the globe from 2000-2015.</p>
 <p>The question I would like to answer in my research, is what forms of government across the globe have the highest perception of government corruption (and is the a correlation). I would also like to find data on womens involvement in governments over the same time span, and analyze the impacts of that alongside what forms of government are most open to women.</p>
 <p>The data I have begun to collect for this analysis is very large. There are over 3000 rows in the data frame that i have currently rewritten to match the code, as such, there is more data being added to this analysis, and limitations on available data may change the overarching analysis. However, despite this, I believe that it is important to analyze these countries in terms of the regions they are a part of, as well as analyzing similar traits among countries whenever possible. As the world moves forward it is important that governments are open and honest, but also representative of the people and ideas that they govern. For that reason, I believe that it is important to analyze the different types of governments that countries use to govern, but also the involvement of women who are representative of approximately half of the world’s population.</p>
-<p>[Important note about current dataset] The data has recently been reformatted, and as such the corrupt_perc variable is currently not formatted correctly. The data is correct, but the scale on the y axis will be 0-100. Values closer to 100 are representative of a country with lower levels of corruption (they have a more honest government), and values closer to 0 represent a very corrupt government.</p>
-Region Values:
+<p>[Important note about current dataset] The data is correct, but the scale on the y axis will be 0-100. Values closer to 100 are representative of a country with lower levels of corruption (they have a more honest government), and values closer to 0 represent a very corrupt government.</p>
+<p>Region Values for Corruption:
 1 - Africa
 2 - Asia and Pacific Islands
 3 - Eastern European
 4 - Latin America and Carribean
-5 - Western European and other
+5 - Western European and other</p>
+<p>Region Values for Gender:
+0 - Africa
+1 - Asia
+2 - Central and North America
+3 - Europe
+4 - Middle East
+5 - Nordic Countries
+6 - Oceania
+7 - South America</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readxl.tidyverse.org'>readxl</a></span><span class='op'>)</span></span>
-<span></span>
-<span></span>
 <span><span class='va'>corrdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"~/Downloads/Corruptclean2 (1).xlsx"</span><span class='op'>)</span></span>
-<span><span class='va'>corrdata</span></span></code></pre>
-</div>
-<pre><code># A tibble: 3,040 × 4
-   country     region  year corrupt_perc
-   &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;       
- 1 Afghanistan      2  2000 &lt;NA&gt;        
- 2 Afghanistan      2  2001 &lt;NA&gt;        
- 3 Afghanistan      2  2002 &lt;NA&gt;        
- 4 Afghanistan      2  2003 &lt;NA&gt;        
- 5 Afghanistan      2  2004 &lt;NA&gt;        
- 6 Afghanistan      2  2005 25          
- 7 Afghanistan      2  2006 &lt;NA&gt;        
- 8 Afghanistan      2  2007 18          
- 9 Afghanistan      2  2008 15          
-10 Afghanistan      2  2009 13          
-# ℹ 3,030 more rows</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>genderdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"GenDip_Dataset_1968-2021.xlsx"</span><span class='op'>)</span></span>
-<span><span class='va'>genderdata</span></span></code></pre>
-</div>
-<pre><code># A tibble: 94,509 × 19
-    year cname_send main_posting title gender cname_receive ccode_send
-   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;              &lt;dbl&gt;
- 1  1968 Afghanist…            1     3      0 China                  4
- 2  1968 Afghanist…            1     3      0 Czechoslovak…          4
- 3  1968 Afghanist…            1     3      0 Egypt                  4
- 4  1968 Afghanist…            1     3      0 France                 4
- 5  1968 Afghanist…            1     3      0 Germany, Fed…          4
- 6  1968 Afghanist…            1     3      0 India                  4
- 7  1968 Afghanist…            1     3      0 Iran, Islami…          4
- 8  1968 Afghanist…            1     3      0 Iraq                   4
- 9  1968 Afghanist…            1     1      0 Italy                  4
-10  1968 Afghanist…            1     3      0 Japan                  4
-# ℹ 94,499 more rows
-# ℹ 12 more variables: ccodealp_send &lt;chr&gt;, ccodeCOW_send &lt;dbl&gt;,
-#   region_send &lt;dbl&gt;, GME_send &lt;dbl&gt;, v2lgfemleg_send &lt;dbl&gt;,
-#   FFP_send &lt;dbl&gt;, ccode_receive &lt;dbl&gt;, ccodealp_receive &lt;chr&gt;,
-#   ccodeCOW_receive &lt;dbl&gt;, region_receive &lt;dbl&gt;, GME_receive &lt;dbl&gt;,
-#   FFP_receive &lt;dbl&gt;</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>corrdata</span> <span class='op'>&lt;-</span> <span class='va'>corrdata</span><span class='op'>|&gt;</span></span>
+<span><span class='va'>corrdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/na.fail.html'>na.omit</a></span><span class='op'>(</span><span class='va'>corrdata</span><span class='op'>)</span></span>
+<span><span class='va'>genderdata</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readxl.tidyverse.org/reference/read_excel.html'>read_excel</a></span><span class='op'>(</span><span class='st'>"GenDip_Dataset_1968-2021.xlsx"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>corrdata</span> <span class='op'>&lt;-</span> <span class='va'>corrdata</span><span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
 <span>    year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>year</span><span class='op'>)</span>, </span>
 <span>      corrupt_perc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>corrupt_perc</span><span class='op'>)</span></span>
 <span>  <span class='op'>)</span></span>
-<span><span class='va'>corrdata</span></span></code></pre>
+<span></span>
+<span><span class='va'>genderdata</span> <span class='op'>&lt;-</span> <span class='va'>genderdata</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span>    gender <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='st'>"Female"</span>, <span class='st'>"Male"</span><span class='op'>)</span></span>
+<span>  <span class='op'>)</span> </span>
+<span></span>
+<span><span class='va'>gender_table</span> <span class='op'>&lt;-</span> <span class='va'>genderdata</span> <span class='op'>|&gt;</span></span>
+<span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>gender</span>, <span class='va'>region_send</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>Count <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> </span></code></pre>
 </div>
-<pre><code># A tibble: 3,040 × 4
-   country     region  year corrupt_perc
-   &lt;chr&gt;        &lt;dbl&gt; &lt;int&gt;        &lt;int&gt;
- 1 Afghanistan      2  2000           NA
- 2 Afghanistan      2  2001           NA
- 3 Afghanistan      2  2002           NA
- 4 Afghanistan      2  2003           NA
- 5 Afghanistan      2  2004           NA
- 6 Afghanistan      2  2005           25
- 7 Afghanistan      2  2006           NA
- 8 Afghanistan      2  2007           18
- 9 Afghanistan      2  2008           15
-10 Afghanistan      2  2009           13
-# ℹ 3,030 more rows</code></pre>
 </div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gender_continent_scatter</span> <span class='op'>&lt;-</span> <span class='va'>gender_table</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>region_send</span>,</span>
+<span>                     y <span class='op'>=</span> <span class='va'>Count</span>,</span>
+<span>                     color <span class='op'>=</span><span class='va'>`gender`</span>,</span>
+<span>                      digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Region"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Number of Diplomats Sent by Gender"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Diplomats by Gender Scatter Plot"</span><span class='op'>)</span></span>
+<span><span class='va'>gender_continent_scatter</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
+</div>
+<p>This plot demonstrates the number of diplomats sent to each of the 7 regions based on their gender. The pink dots indicate female, while the blue dots represent male. As demonstrated in this graph, the majority of countries send a significantly higher amount of male Diplomats abraod than female.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>by_continent_plot</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>corrdata</span>,</span>
@@ -1608,12 +1588,15 @@ Region Values:
 <span>              <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>                x <span class='op'>=</span> <span class='st'>"Year"</span>,</span>
 <span>                y <span class='op'>=</span> <span class='st'>"Corruption Level"</span>,</span>
-<span>                title <span class='op'>=</span> <span class='st'>"Corruption in Different Regions 2000-2015"</span></span>
+<span>                title <span class='op'>=</span> <span class='st'>"Corruption in Different Regions 2000-2015 Plot"</span></span>
 <span>              <span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>region</span>, nrow <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
 <span><span class='va'>by_continent_plot</span></span></code></pre>
 </div>
-<img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" />
+<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
+</div>
+<p>As seen by the Corruption in Different Regions 2000-2015 graph, countries in Africa tend to have higher levels of perceived corruption, while Western European have the lowest levels followed by Eastern European, Latin American and Carribean, and then Asian and Pacific Island Countries.</p>
+<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>by_continent_scatter</span> <span class='op'>&lt;-</span> <span class='va'>corrdata</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>,</span>
@@ -1622,7 +1605,8 @@ Region Values:
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>region</span>, nrow <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Region"</span>,</span>
-<span>       y <span class='op'>=</span> <span class='st'>"Level of Corruption in Regional Countries"</span><span class='op'>)</span></span></code></pre>
+<span>       y <span class='op'>=</span> <span class='st'>"Level of Corruption in Regional Countries"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Corruption in Different Regions 2000-2015 Scatter Plot"</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>$x
 [1] &quot;Region&quot;
@@ -1630,12 +1614,18 @@ Region Values:
 $y
 [1] &quot;Level of Corruption in Regional Countries&quot;
 
+$title
+[1] &quot;Corruption in Different Regions 2000-2015 Scatter Plot&quot;
+
 attr(,&quot;class&quot;)
 [1] &quot;labels&quot;</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>by_continent_scatter</span></span></code></pre>
 </div>
-<img src="index_files/figure-html5/unnamed-chunk-2-2.png" width="624" />
+<p><img src="index_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
+</div>
+<p>(This graph is simply another way to visualize the perceived corruption in different countries, so is the next one)</p>
+<div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>region_histogram</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>corrdata</span>,</span>
 <span>                  mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>region</span>,</span>
@@ -1644,14 +1634,16 @@ attr(,&quot;class&quot;)
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>region</span>, nrow <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>    x <span class='op'>=</span> <span class='st'>"Continent"</span>,</span>
-<span>    y <span class='op'>=</span> <span class='st'>"Average Corruption Percentage in Different Regions 2000-2015"</span></span>
+<span>    y <span class='op'>=</span> <span class='st'>"Average Corruption Percentage in Different Regions 2000-2015"</span>,</span>
+<span>    title <span class='op'>=</span> <span class='st'>"Corruption by Region 2000-2015 Histogram"</span></span>
 <span>  <span class='op'>)</span></span>
 <span><span class='va'>region_histogram</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-2-3.png" width="624" /></p>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
 </div>
-<p>As seen by the Corruption in Different Regions 2000-2015 graph, countries in Africa tend to have higher levels of perceived corruption, while Western European have the lowest levels followed by Eastern European, Latin American and Carribean, and then Asian and Pacific Island Countries.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>This graph shows a very clear representation that countries in Western Europe have significantly lower levels on average of perceived corruption than the other regions.</p>
+<p>Prior to my final project I have more analyses to make, and datasets to combine. However, the data I currently have shows that there is an underwhelming amount of women included in international affairs in the last 30 years, and that many countries are experiencing higher levels of corruption. Going forward with my analysis, I will be looking at the impacts on women in individual countries to see how their involvement affects the perceived levels of corruption. (That requires changing lots of names, so is in progress). At this time, I believe that countries with a higher level of women participation are likely to have a lower level of corruption. I think this due to views and beliefs regarding freedom and equality.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
