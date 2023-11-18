@@ -1,0 +1,181 @@
+---
+title: "Gov 50 Final Project"
+author: "Tasia Avery"
+description: "My final project"
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r}
+library(tidyverse)
+install.packages("readxl")
+
+library("readxl")
+```
+
+
+```{r}
+corrdata <- read_excel("~/Downloads/Corruptclean2 (1).xlsx")
+
+corrdata
+
+corrdata <- na.omit(corrdata)
+summary(corrdata)
+
+corrdata
+
+by_continent_plot <- ggplot(data = corrdata,
+                  mapping = aes(x = year, y = corrupt_perc)) +
+  geom_line(mapping = aes(group = country), color = "gray70") + 
+  geom_smooth(method = "loess", se = FALSE, linewidth = 1.1, color = "blue") +
+              labs(
+                x = "Year",
+                y = "Corruption Level",
+                title = "Corruption in Different Regions 2000-2015"
+              ) +
+  facet_wrap(~ region, nrow = 1)
+plot_q4
+
+by_continent_scatter <-
+  ggplot(mapping = aes(x = year,
+                     y = corrupt_perc,
+                     color =`region`, digits = 2)) +
+  geom_point(alpha = 0.8) +
+  labs(x = "Region",
+       y = "Level of Corruption in Regional Countries")
+
+corruption_scatter
+```
+```{r}
+
+```
+
+
+
+
+
+
+
+```{r}
+balance_table <- corrdata |>
+  group_by(region) 
+
+  knitr :: kable(balance_table)
+```
+
+```{r}
+plot_q2 <- ggplot(data = corrdata,
+                  mapping = aes(x = region,
+                                y = corrupt_perc)) +
+  geom_boxplot() +
+  facet_wrap(~ region, nrow = 1) +
+  labs(
+    x = "Continent",
+    y = "Life expectancy at birth in years"
+  )
+plot_q2
+```
+
+
+```{r}
+by_continent_plot <- ggplot(data = corrdata,
+                  mapping = aes(x = year, y = corrupt_perc)) +
+  geom_line(mapping = aes(group = country), color = "gray70") + 
+  geom_smooth(method = "loess", se = FALSE, linewidth = 1.1, color = "blue") +
+              labs(
+                x = "Year",
+                y = "Corruption Level",
+                title = "Corruption in Different Regions 2000-2015"
+              ) +
+  facet_wrap(~ region, nrow = 1)
+plot_q4
+
+by_continent_scatter <-
+  ggplot(mapping = aes(x = year,
+                     y = corrupt_perc,
+                     color =`region`, digits = 2)) +
+  geom_point(alpha = 0.8) +
+  labs(x = "Region",
+       y = "Level of Corruption in Regional Countries")
+
+corruption_scatter
+```
+
+
+```{r}
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+corruption_scatter <- corrdata |>
+  ggplot(mapping = aes(x = year,
+                     y = corrupt_perc,
+                     color =`region`, digits = 2)) +
+  geom_point(alpha = 0.8) +
+  labs(x = "Region",
+       y = "Level of Corruption in Regional Countries")
+
+corruption_scatter
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+| Name              | Description                                                                                                |
+|-------------------|------------------------------------------------------------------------------------------------------------|
+| `Panel`             | Drug of Overdose (0 = all drug, 1 = any opioid, 2 = natural and semisynthetic opioids, 3 = methadone, 4 = other synthetic opioids (other than methadone), 5 = heroin)                                                                                          |
+| `Unit`         | Deaths per 100,000 residents (1 = age adjusted, 2 = crude)                                 |
+
+| `STUB_NAME`    | Data on the Sex, Race, Age and Hispanic Origin of individuals (Total = 0, Age = 1, Sex = 2, Sex and Age = 3, Sex and Race (Single Race) / Sex and Race = 4, Sex and Race and Hispanic Origin (Single Race) / Sex and Race and Hispanic Origin= 5)          |
+
+| `STUB_LABEL`          | Demographics of the individual who died of overdose (All persons = 0.1, 
+
+Under 15 = 1.1, 15-24 = 1.2, 25-34 = 1.3, 35-44 = 1.4, 45-54 = 1.5, 55-64 = 1.6, 65-74 = 1.7, 75-84 = 1.8, 85 and over = 1.9,  
+
+Male = 2.1, Female = 2.2, 
+
+Male: Under 15 years = 3.11, Male: 15-24 years = 3.12, Male: 25-34 years = 3.13, Male: 35-44 years = 3.14, Male: 45-54 years = 3.15, Male: 55-64 years = 3.16, Male: 65-74 years = 3.17, Male: 75-84 years = 3.18, Male: 85 years and over = 3.19, Female: Under 15 years = 3.21, Female: 15-24 years = 3.22, Female: 25-34 years = 3.23, Female: 35-44 years = 3.24, Female: 45-54 years = 3.25, Female: 55-64 years = 3.26, Female: 65-74 years = 3.27, Female: 75-84 years = 3.28, Female: 85 years and over = 3.29, 
+
+Male: White = 4.1, Male: Black or African American = 4.2, Male: American Indian or Alaska Native = 4.3, Male: Asian or Pacific Islander = 4.4, Female: White = 4.5, Female: Black or African American = 4.6, Female: American Indian or Alaska Native = 4.7, Female: Asian or Pacific Islander = 4.8, 
+
+Male: Hispanic or Latino: All races = 5.1, Male: Not Hispanic or Latino: White = 5.2, Male: Not Hispanic or Latino: Black = 5.3, Male: Not Hispanic or Latino: American Indian or Alaska Native = 5.4, Male: Not Hispanic or Latino: Asian or Pacific Islander = 5.5, Female: Hispanic or Latino: All races = 5.6, Female: Not Hispanic or Latino: White = 5.7, Female: Not Hispanic or Latino: Black = 5.8, Female: Not Hispanic or Latino: American Indian or Alaska Native = 5.9, Female: Not Hispanic or Latino: Asian or Pacific Islander = 5.91, )                                                |
+| `YEAR`           | The year the death by overdose occurred (Year 1 = 1999, Year 20 = 2018)                                                              |
+| `AGE`        | The age group of the individual who died (All ages = 1.1, under 15 years = 1.2, 15-24 years = 1.3, 25-34 years = 1.4. 35-44 years = 1.5. 45-54 years = 1.6, 55-64 years = 1.7, 65-74 years = 1.8, 75-84 years = 1.9, ages 85 and older = 1.91)                                                        |
+| `ESTIMATE`   | The likelihood that individual had of overdosing based on the data (closer to 0 is less likely, while closer to 100 is more likely)                                                            |
+
+
+
+
+
+
+
+
+
