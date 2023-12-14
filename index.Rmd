@@ -9,18 +9,17 @@ output:
 
 
 
-## Project thoughts
+## Introduction
 
-I am interested in exploring data related to political culture. I am not 100% sure what I want to evaluate yet, but I think that analyzing the connection within a political context is something I am most interested in. 
+Introduction:
+Across the world there is a problem with corruption. Corruption impacts several people as it can lead to loss of wealth, loss of life, and other serious consequences. According to a study by the United Nations Office on Drugs and Crime (UNODC) corruption most severely impacts vulnerable populations. Vulnerable populations can be identified as women, children, prisoners, those with mental health disorders, etc. As individuals across the world are impacted by corruption, it is important to identify which steps can be taken to reduce this human phenomena, and help the vulnerable individuals most greatly impacted. Given that vulnerable populations are more greatly effected, it is important that they have a voice in the government in order to ensure they are heard. Unfortunately, women and children are greatly under-represented in governments globally, and as such their voices are not heard. Nonetheless, there ARE women who hold political office, and political power, it is merely at a much lower rate than their male counterparts. Given that women are more likely to be affected by corruption than men, does that imply a decrease in corruption when women are more involved in the government?
 
+One governmental role women serve in is holding the office of Diplomat. A diplomat is someone that is sanctioned by a government or instiution such as the United Nations to conduct diplomacy with foreign countries. Because it is easy to track the number of diplomats due to international relations, this will be the variable we use. I hypothesize, that countries that both send and receive more female diplomats will be perceived as less corrupt by their citizens. I believe this because a country with a higher quality of life typically has a lower rate of corruption, and equality is associated with that higher quality of life. I expect to see countries with higher perceived corruption to have less female diplomats overall. This finding could be significant to countries as if true, it would indicate that by involving more females in government (therefore hearing more ideas and perspectives) they could decrease their perceived corruption. 
 
-For my final project I will be analyzing data related to political culture, and political environment. It is very important to compare different countries across a span of years in order to gain better information as to how they have changed over time individually, but also in comparison to other countries. I have currently sourced data from transparency international, that details the perception of government corruption in various countries across the globe from 2000-2015. 
+## Data:
+My data comes from two different sources. The first piece of data was collected from Transparency International. This takes the Corruption Perception Index, and analyzes 180 different countries. Countries with values closer to 0 are highly corrupt, where as countries with scores closer to 100 are less corrupt. The other portion of my data comes from a dataset produced by the University of Gothenburg, that compiles data regarding the gender and role of diplomats in international relations. It can be important to study the gender of diplomats in regards to corruption, as it can allow us to understand if women’s involvement in diplomacy has any impact on perceived corruption. 
 
-The question I would like to answer in my research, is what forms of government across the globe have the highest perception of government corruption (and is the a correlation). I would also like to find data on womens involvement in governments over the same time span, and analyze the impacts of that alongside what forms of government are most open to women. 
-
-The data I have begun to collect for this analysis is very large. There are over 3000 rows in the data frame that i have currently rewritten to match the code, as such, there is more data being added to this analysis, and limitations on available data may change the overarching analysis. However, despite this, I believe that it is important to analyze these countries in terms of the regions they are a part of, as well as analyzing similar traits among countries whenever possible. As the world moves forward it is important that governments are open and honest, but also representative of the people and ideas that they govern. For that reason, I believe that it is important to analyze the different types of governments that countries use to govern, but also the involvement of women who are representative of approximately half of the world's population. 
-
-[Important note about current dataset] The data is correct, but the scale on the y axis will be 0-100. Values closer to 100 are representative of a country with lower levels of corruption (they have a more honest government), and values closer to 0 represent a very corrupt government.
+Given that the corruption perception data was already nicely separated into 5 regions, I first ran an analysis on that producing a graph of the perceived corruption of each country in each region, finding that Africa has the highest level of perceived corruption, and countries in Western Europe have the least. Knowing this information, I decided to compare the amount of diplomats in each country. 
 
 Region Values for Corruption:
 1 - Africa
@@ -47,93 +46,186 @@ corrdata <- read_excel("~/Downloads/Corruptclean2 (1).xlsx")
 corrdata <- na.omit(corrdata)
 genderdata <- read_excel("GenDip_Dataset_1968-2021.xlsx")
 
-corrdata <- corrdata|>
+corrdata <- corrdata |>
   mutate(
     year = as.integer(year), 
       corrupt_perc = as.integer(corrupt_perc)
   )
+
 
 genderdata <- genderdata |>
   mutate(
     gender = if_else(gender == 1, "Female", "Male")
   ) 
 
-gender_table <- genderdata |>
-group_by(gender, region_send) |>
-  summarize(Count = n()) 
+africacorrdata <- corrdata |>
+  filter(region == "1")
+corrdata 
+## only corruption data for African countries
 
+toafrica_genderdata <- genderdata |>
+  filter(region_receive == "0" | cname_receive == "Algeria" )
+
+
+toafrica_genderdata <- toafrica_genderdata |> 
+  filter(year == "2003" | year == "2008" | year == "2013" | year == "2014")
+toafrica_genderdata
+
+
+fromafrica_genderdata <- genderdata |>
+  filter(region_send == "0" | cname_send == "Algeria")
+
+
+fromafrica_genderdata <- fromafrica_genderdata |> 
+  filter(year == "2003" | year == "2008" | year == "2013" | year == "2014")
+fromafrica_genderdata
+
+toafrica_genderdata <- toafrica_genderdata |>
+  select(year, cname_receive, gender, region_send)
+
+fromafrica_genderdata <- fromafrica_genderdata |>
+  select(year, cname_send, gender, region_receive)
+
+toafrica_genderdata <- toafrica_genderdata |>
+  group_by(year, cname_receive, region_send) |>
+  count(gender) |>
+   rename(diplomats_received = n,
+          country = cname_receive)
+
+fromafrica_genderdata <- fromafrica_genderdata |>
+  group_by(year, cname_send, region_receive) |>
+  count(gender) |>
+   rename(diplomats_sent = n,
+          country = cname_send)
+
+jointdata <- africacorrdata |>
+  left_join(toafrica_genderdata, by = join_by(country, year)) |>
+  rename(to_africa_gender = gender)
+
+
+jointdata <- jointdata |>
+  left_join(fromafrica_genderdata, by = join_by(country, year)) |>
+  rename(from_africa_gender = gender)
 ```
 
-
-
-
-
+The graph below shows the average corruption in African countries from 2000-2015. Corruption is the the dependent variable in this study, and further research is going to be used to determine whether or not female diplomats contribute to lower levels of corruption. 
 
 ```{r}
-gender_continent_scatter <- gender_table |>
-  ggplot(mapping = aes(x = region_send,
-                     y = Count,
-                     color =`gender`,
-                      digits = 2)) +
-  geom_point(alpha = 0.8) +
-  labs(x = "Region",
-       y = "Number of Diplomats Sent by Gender",
-       title = "Diplomats by Gender Scatter Plot")
-gender_continent_scatter
-```
-This plot demonstrates the number of diplomats sent to each of the 7 regions based on their gender. The pink dots indicate female, while the blue dots represent male. As demonstrated in this graph, the majority of countries send a significantly higher amount of male Diplomats abraod than female. 
-
-
-
-
-
-```{r}
-by_continent_plot <- ggplot(data = corrdata,
+africancorruption <- ggplot(data = jointdata,
                   mapping = aes(x = year, y = corrupt_perc)) +
   geom_line(mapping = aes(group = country), color = "gray70") + 
   geom_smooth(method = "loess", se = FALSE, linewidth = 1.1, color = "blue") +
-              labs(
+  labs(
                 x = "Year",
                 y = "Corruption Level",
-                title = "Corruption in Different Regions 2000-2015 Plot"
-              ) +
-  facet_wrap(~ region, nrow = 1)
-by_continent_plot
+                title = "Corruption in Africa 2000-2015 Plot"
+              )
+africancorruption
 ```
-As seen by the Corruption in Different Regions 2000-2015 graph, countries in Africa tend to have higher levels of perceived corruption, while Western European have the lowest levels followed by Eastern European, Latin American and Carribean, and then Asian and Pacific Island Countries.
+
+To begin, I looked at the 10 most corrupt, and 10 least corrupt countries in Africa so that I could better analyze the differences in diplomats given their regional similarity. 
 
 ```{r}
-by_continent_scatter <- corrdata |>
-  ggplot(mapping = aes(x = year,
-                     y = corrupt_perc,
-                      digits = 2)) +
-  geom_point(alpha = 0.8) +
-  facet_wrap(~ region, nrow = 1)
-  labs(x = "Region",
-       y = "Level of Corruption in Regional Countries",
-       title = "Corruption in Different Regions 2000-2015 Scatter Plot")
-by_continent_scatter
-```
-(This graph is simply another way to visualize the perceived corruption in different countries, so is the next one)
+jointdata <- jointdata |>
+  group_by(country) |>
+  mutate(avg_corruption = mean(corrupt_perc, na.rm = TRUE))
 
-```{r}
-region_histogram <- ggplot(data = corrdata,
-                  mapping = aes(x = region,
-                                y = corrupt_perc)) +
-  geom_boxplot() +
-  facet_wrap(~ region, nrow = 1) +
-  labs(
-    x = "Continent",
-    y = "Average Corruption Percentage in Different Regions 2000-2015",
-    title = "Corruption by Region 2000-2015 Histogram"
+least_corrupt_summary <- jointdata |> 
+  group_by(country) |>
+  summarize(avg_corruption = mean(corrupt_perc, na.rm = TRUE)) |>
+  slice_max(avg_corruption, n = 10)
+least_corrupt_summary
+
+most_corrupt_summary <- jointdata |> 
+  group_by(country) |>
+  summarize(avg_corruption = mean(corrupt_perc, na.rm = TRUE)) |>
+  slice_min(avg_corruption, n = 10)
+most_corrupt_summary
+
+jointdata <- jointdata |>
+  mutate(
+    corruption_group = case_when(
+      avg_corruption < 20.34 ~ "10 Most Corrupt",
+      avg_corruption >= 20.34 & avg_corruption < 42.609 ~ "In the Middle",
+      avg_corruption >= 42.609 ~ "10 Least Corrupt"
+    )
   )
-region_histogram
+least_corrupt_summary2 <- jointdata |> 
+  group_by(country) |>
+  summarize(avg_corruption = mean(corrupt_perc, na.rm = TRUE)) |>
+  slice_max(avg_corruption, n = 10) |>
+  ggplot(mapping = aes(y = fct_reorder(country, avg_corruption),
+                      x = avg_corruption)) +
+  geom_col() + 
+  labs(
+    x = "Average Perceived Corruption", 
+    y = "Country",
+    title = "10 Least Corrupt Countries in Africa"
+  )
+least_corrupt_summary2
+
+most_corrupt_summary2 <- jointdata |> 
+  group_by(country) |>
+  summarize(avg_corruption = mean(corrupt_perc, na.rm = TRUE)) |> 
+  slice_min(avg_corruption, n = 10) |>
+  ggplot(mapping = aes(y = fct_reorder(country, avg_corruption),
+                      x = avg_corruption)) +
+  geom_col() + 
+  labs(
+    x = "Average Perceived Corruption", 
+    y = "Country",
+    title = "10 Most Corrupt Countries in Africa"
+  )
+most_corrupt_summary2
 ```
-This graph shows a very clear representation that countries in Western Europe have significantly lower levels on average of perceived corruption than the other regions. 
+
+```{r}
+corr_jointdata <- jointdata |> 
+  filter(corruption_group == "10 Most Corrupt" | corruption_group == "10 Least Corrupt")
+  
+corr_jointdata <- corr_jointdata |>
+  group_by(country) |>
+  mutate(total_dips_sent = sum(diplomats_sent, na.rm = TRUE))
+
+fromgender_count <- fromafrica_genderdata |>
+  count(gender)
+fromgender_count
+
+receivinggenderdata_table <- fromafrica_genderdata |>
+  group_by(gender, region_receive) |>
+  summarize(n = n())
+knitr::kable(receivinggenderdata_table)
+```
+Africa sent 3 times the amount of male diplomats compared to female diplomats 
+
+
+## Results
+The results from my study are unfortunately inconclusive. I have reformatted my data several different times, and have been unable to come to a logical solution. However, it would seem that there is little correlation, but it could be due to lack of data, and a very poor analysis. 
+
+## Citations
+Niklasson, Birgitta and Ann E. Towns. 2023. The GenDip Dataset on Gender and Diplomatic
+Representation, version June23. University of Gothenburg: The GenDip Program:
+www.gu.se/en/gendip/gendip-data
+
+
+Transparency International. 2022. 2022 Corruption Perception Index Report
 
 
 
-Prior to my final project I have more analyses to make, and datasets to combine. However, the data I currently have shows that there is an underwhelming amount of women included in international affairs in the last 30 years, and that many countries are experiencing higher levels of corruption. Going forward with my analysis, I will be looking at the impacts on women in individual countries to see how their involvement affects the perceived levels of corruption. (That requires changing lots of names, so is in progress). At this time, I believe that countries with a higher level of women participation are likely to have a lower level of corruption. I think this due to views and beliefs regarding freedom and equality. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

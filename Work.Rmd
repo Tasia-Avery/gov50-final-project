@@ -36,7 +36,7 @@ by_continent_plot <- ggplot(data = corrdata,
                 title = "Corruption in Different Regions 2000-2015"
               ) +
   facet_wrap(~ region, nrow = 1)
-plot_q4
+by_continent_plot
 
 by_continent_scatter <-
   ggplot(mapping = aes(x = year,
@@ -46,7 +46,7 @@ by_continent_scatter <-
   labs(x = "Region",
        y = "Level of Corruption in Regional Countries")
 
-corruption_scatter
+by_continent_scatter
 ```
 ```{r}
 
@@ -90,7 +90,7 @@ by_continent_plot <- ggplot(data = corrdata,
                 title = "Corruption in Different Regions 2000-2015"
               ) +
   facet_wrap(~ region, nrow = 1)
-plot_q4
+by_continent_plot
 
 by_continent_scatter <-
   ggplot(mapping = aes(x = year,
@@ -99,8 +99,7 @@ by_continent_scatter <-
   geom_point(alpha = 0.8) +
   labs(x = "Region",
        y = "Level of Corruption in Regional Countries")
-
-corruption_scatter
+by_continent_scatter
 ```
 
 
